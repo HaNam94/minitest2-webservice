@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Tìm kiếm xe</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#searchForm").on("submit", function(event) {
+                event.preventDefault();
+                var searchQuery = $("#searchQuery").val();
+                $.ajax({
+                    type: "GET",
+                    url: "/cars/search",
+                    data: { name: searchQuery },
+                    success: function(data) {
+                        $("#searchResults tbody").empty();
+                        if (data.content.length === 0) {
+                            $("#searchResults tbody").append("<tr><td colspan='7'>No results found</td></tr>");
+                        } else {
+                            $.each(data.content, function(index, car) {
+                                var row = `<tr>
+                                    <td>${index + 1}</td>
+                                    <td>${car.name}</td>
+                                    <td>${car.code}</td>
+                                    <td>${car.producer.name}</td>
+                                    <td>${car.price}</td>
+                                    <td>${car.type.name}</td>
+                                    <td><button class="btn btn-warning"><a href="/cars/update/${car.id}">Sửa</a></button></td>
+                                    <td><button class="btn btn-danger"><a href="/cars/delete/${car.id}">Xóa</a></button></td>
+                                </tr>`;
+                                $("#searchResults tbody").append(row);
+                            });
+                        }
+                    },
+                    error: function() {
+                        alert("Error searching for cars.");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Tìm kiếm xe</h1>
+    <form id="searchForm" class="form-inline my-2 my-lg-0">
+        <input id="searchQuery" class="form-control mr-sm-2" type="text" name="s" placeholder="Tìm kiếm">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Tìm kiếm</button>
+    </form>
+    <h2 class="mt-4">Kết quả tìm kiếm</h2>
+    <table class="table table-bordered" id="searchResults">
+        <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên xe</th>
+            <th>Biển số xe</th>
+            <th>Nhà sản xuất</th>
+            <th>Giá</th>
+            <th>Kiểu xe</th>
+            <th colspan="2">Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Search results will be loaded here -->
+        </tbody>
+    </table>
+    <a href="/cars" class="btn btn-secondary mt-3">Trang chủ</a>
+</div>
+</body>
+</html>

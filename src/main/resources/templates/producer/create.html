@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm nhà sản xuất</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Thêm nhà sản xuất</h1>
+    <form id="createProducerForm">
+        <div class="form-group">
+            <label for="name">Tên nhà sản xuất</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Tên">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="createProducer()">Thêm</button>
+    </form>
+    <button class="btn btn-secondary"><a href="/producers">Trang chủ</a></button>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function createProducer() {
+        var producerData = {
+            name: $('#name').val()
+        };
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/producers",
+            data: JSON.stringify(producerData),
+            success: function(response) {
+                alert('Thêm nhà sản xuất thành công!');
+                // Optionally update UI or redirect
+                window.location.href = '/producers'; // Redirect to producers page
+            },
+            error: function(error) {
+                alert('Thêm nhà sản xuất thất bại!');
+            }
+        });
+    }
+</script>
+</body>
+</html>

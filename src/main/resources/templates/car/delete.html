@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Xóa</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("form").on("submit", function(event) {
+                event.preventDefault();
+                var id = $("input[name='id']").val();
+                $.ajax({
+                    type: "DELETE",
+                    url: "/cars/" + id,
+                    success: function() {
+                        alert("Car deleted successfully!");
+                        window.location.href = "/cars";
+                    },
+                    error: function() {
+                        alert("Error deleting car.");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Xóa xe</h1>
+    <form>
+        <div class="form-group">
+            <label for="id">Id</label>
+            <input type="text" class="form-control" name="id" readonly>
+        </div>
+        <div class="form-group">
+            <label for="name">Tên xe</label>
+            <p class="form-control-plaintext" name="name"></p>
+        </div>
+        <div class="form-group">
+            <label for="code">Biển số</label>
+            <p class="form-control-plaintext" name="code"></p>
+        </div>
+        <div class="form-group">
+            <label for="producer.name">Nhà sản xuất</label>
+            <p class="form-control-plaintext" name="producer.name"></p>
+        </div>
+        <div class="form-group">
+            <label for="price">Giá</label>
+            <p class="form-control-plaintext" name="price"></p>
+        </div>
+        <div class="form-group">
+            <label for="type.name">Kiểu xe</label>
+            <p class="form-control-plaintext" name="type.name"></p>
+        </div>
+        <button type="submit" class="btn btn-danger">Xác nhận</button>
+    </form>
+    <a href="/cars" class="btn btn-secondary mt-3">Trang chủ</a>
+</div>
+</body>
+</html>

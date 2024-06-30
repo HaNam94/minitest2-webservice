@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sửa kiểu xe</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Sửa kiểu xe</h1>
+    <form id="updateTypeForm">
+        <div class="form-group">
+            <label>ID</label>
+            <input type="number" class="form-control" th:field="*{id}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="name">Tên kiểu xe</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="updateType()">Sửa</button>
+    </form>
+    <button class="btn btn-secondary"><a href="/types">Trang chủ</a></button>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function updateType() {
+        var typeData = {
+            id: $('#id').val(),
+            name: $('#name').val()
+        };
+
+        $.ajax({
+            type: "PUT",
+            contentType: "application/json",
+            url: "/types/" + typeData.id,
+            data: JSON.stringify(typeData),
+            success: function(response) {
+                alert('Sửa kiểu xe thành công!');
+                window.location.href = '/types'; // Redirect to types page
+            },
+            error: function(error) {
+                alert('Sửa kiểu xe thất bại!');
+            }
+        });
+    }
+</script>
+</body>
+</html>

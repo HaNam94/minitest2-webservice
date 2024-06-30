@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Thêm</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("form").on("submit", function(event) {
+                event.preventDefault();
+                var formData = {
+                    name: $("input[name='name']").val(),
+                    code: $("input[name='code']").val(),
+                    producer: { id: $("select[name='producer.id']").val() },
+                    price: $("input[name='price']").val(),
+                    type: { id: $("select[name='type.id']").val() }
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/cars",
+                    contentType: "application/json",
+                    data: JSON.stringify(formData),
+                    success: function() {
+                        alert("Car added successfully!");
+                        window.location.href = "/cars";
+                    },
+                    error: function() {
+                        alert("Error adding car.");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Thêm xe</h1>
+    <form>
+        <div class="form-group">
+            <label for="name">Tên xe</label>
+            <input type="text" class="form-control" name="name" placeholder="Tên">
+        </div>
+        <div class="form-group">
+            <label for="code">Biển số</label>
+            <input type="text" class="form-control" name="code" placeholder="Biển số">
+        </div>
+        <div class="form-group">
+            <label for="producer.id">Nhà sản xuất</label>
+            <select class="form-control" name="producer.id">
+                <option th:each="producer : ${producers}" th:value="${producer.id}" th:text="${producer.name}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="price">Giá</label>
+            <input type="number" class="form-control" name="price" placeholder="Giá">
+        </div>
+        <div class="form-group">
+            <label for="type.id">Kiểu xe</label>
+            <select class="form-control" name="type.id">
+                <option th:each="type : ${types}" th:value="${type.id}" th:text="${type.name}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Thêm</button>
+    </form>
+    <a href="/cars" class="btn btn-secondary mt-3">Trang chủ</a>
+</div>
+</body>
+</html>

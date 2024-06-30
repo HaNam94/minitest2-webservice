@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Thống kê</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>Danh sách thống kê</h2>
+    <a class="btn btn-primary" th:href="@{/types}">Danh sách kiểu xe</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên kiểu xe</th>
+            <th>Số lượng xe</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="statistic, count : ${statistics}">
+            <td th:text="${count.count}"></td>
+            <td th:text="${statistic.name}"></td>
+            <td th:text="${statistic.quantity}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <div>
+        <a th:if="${statistics.hasPrevious()}" th:href="@{/types/statistic(page=${statistics.number - 1})}">Previous</a>
+        <span th:text="${statistics.number + 1}"></span>/<span th:text="${statistics.totalPages}"></span>
+        <a th:if="${statistics.hasNext()}" th:href="@{/types/statistic(page=${statistics.number + 1})}">Next</a>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</body>
+</html>

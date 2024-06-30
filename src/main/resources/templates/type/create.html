@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Thêm kiểu xe</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Thêm kiểu xe</h1>
+    <form id="createTypeForm">
+        <div class="form-group">
+            <label for="name">Tên kiểu xe</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Tên">
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="createType()">Thêm</button>
+    </form>
+    <button class="btn btn-secondary"><a href="/types">Trang chủ</a></button>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function createType() {
+        var typeData = {
+            name: $('#name').val()
+        };
+
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/types",
+            data: JSON.stringify(typeData),
+            success: function(response) {
+                alert('Thêm kiểu xe thành công!');
+                // Optionally update UI or redirect
+                window.location.href = '/types'; // Redirect to types page
+            },
+            error: function(error) {
+                alert('Thêm kiểu xe thất bại!');
+            }
+        });
+    }
+</script>
+</body>
+</html>

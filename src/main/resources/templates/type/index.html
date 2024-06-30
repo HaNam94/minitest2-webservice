@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách kiểu xe</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h2>Danh sách kiểu xe</h2>
+    <a class="btn btn-primary" th:href="@{/cars}">Danh sách xe</a>
+    <a class="btn btn-primary" th:href="@{/producers}">Danh sách nhà sản xuất</a>
+    <a class="btn btn-primary" th:href="@{/types/statistic}">Thống kê số xe </a>
+    <a class="btn btn-success" th:href="@{/types/create}">Thêm kiểu xe</a>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>STT</th>
+            <th>Tên kiểu xe</th>
+            <th>Hành động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="type, count : ${types}">
+            <td th:text="${count.count}"></td>
+            <td th:text="${type.name}"></td>
+            <td>
+                <button class="btn btn-warning"><a th:href="@{/types/update/{id}(id=${type.id})}">Sửa</a></button>
+                <button class="btn btn-danger" onclick="confirmDelete(${type.id})">Xóa</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function confirmDelete(typeId) {
+        if (confirm('Bạn có chắc chắn muốn xóa kiểu xe này không?')) {
+            $.ajax({
+                type: "DELETE",
+                url: "/types/" + typeId,
+                success: function(response) {
+                    alert('Xóa kiểu xe thành công!');
+                    window.location.reload(); // Reload current page
+                },
+                error: function(error) {
+                    alert('Xóa kiểu xe thất bại!');
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

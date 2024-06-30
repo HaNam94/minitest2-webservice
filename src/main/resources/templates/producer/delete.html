@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xóa nhà sản xuất</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1>Xóa nhà sản xuất</h1>
+    <form id="deleteProducerForm">
+        <div class="form-group">
+            <label>ID</label>
+            <p th:text="*{id}"></p>
+        </div>
+        <div class="form-group">
+            <label>Tên nhà sản xuất</label>
+            <p th:text="*{name}"></p>
+        </div>
+        <button type="button" class="btn btn-danger" onclick="deleteProducer()">Xác nhận</button>
+    </form>
+    <button class="btn btn-secondary"><a href="/producers">Danh sách nhà sản xuất</a></button>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function deleteProducer() {
+        $.ajax({
+            type: "DELETE",
+            url: "/producers/" + ${producer.id},
+            success: function(response) {
+                alert('Xóa nhà sản xuất thành công!');
+                // Optionally update UI or redirect
+                window.location.href = '/producers'; // Redirect to producers page
+            },
+            error: function(error) {
+                alert('Xóa nhà sản xuất thất bại!');
+            }
+        });
+    }
+</script>
+</body>
+</html>
